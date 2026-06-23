@@ -19,11 +19,11 @@ jobs:
    - name: Install Bandit
      run: pip install bandit
 
-   - name: Run Bandit Scan
-     run: bandit -r . 
-     
    # - name: Run Bandit Scan
-   #   run: bandit -ll -ii -r . -f json -o bandit-report.json
+   #   run: bandit -r . 
+     
+   - name: Run Bandit Scan
+     run: bandit -ll -ii -r . -f json -o bandit-report.json
 
    # - name: Upload Artifact
    #   uses: actions/upload-artifact@v3
