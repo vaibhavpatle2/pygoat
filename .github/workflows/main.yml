@@ -45,8 +45,8 @@ jobs:
  
        - name: Build and start PyGoat
          run: |
-           docker compose up -d
-           sleep 30          # Django needs time to boot
+          docker run -d --name pygoat -p 8000:8000 pygoat/pygoat:latest
+          sleep 25      # give Django time to boot
            
        - name: Wait until PyGoat is ready
          run: |
