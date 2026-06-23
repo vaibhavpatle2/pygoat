@@ -47,7 +47,21 @@ jobs:
          run: |
            docker compose up -d
            sleep 30          # Django needs time to boot
- 
+           
+       - name: Wait until PyGoat is ready
+         run: |
+               for i in $(seq 1 30); do
+                 if curl -sSf http://localhost:8000 >/dev/null 2>&1; then
+                   echo "PyGoat is up!"
+                   exit 0
+                 fi
+                 echo "Waiting for PyGoat... ($i)"
+                 sleep 3
+               done
+               echo "PyGoat did not start in time — dumping logs:"
+               docker logs pygoat
+               exit 1
+               
        - name: OWASP ZAP Baseline Scan
          uses: zaproxy/action-baseline@v0.16.0
          with:
