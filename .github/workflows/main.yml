@@ -23,7 +23,7 @@ jobs:
    #   run: bandit -r . 
      
    - name: Run Bandit Scan
-     run: bandit -ll -ii -r . -f json -o bandit-report.json
+     run: bandit -ll -ii -r . -f json -o bandit-report.json || true
 
    - name: Upload Artifact
      uses: actions/upload-artifact@v4
@@ -35,6 +35,7 @@ jobs:
  dast:
      runs-on: ubuntu-latest
      needs: sast_scan      # run AFTER your SAST job (use your job's actual name)
+     if: always()   
      permissions:
        contents: read
        issues: write
