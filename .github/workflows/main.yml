@@ -19,18 +19,18 @@ jobs:
    - name: Install Bandit
      run: pip install bandit
 
-   - name: Run Bandit Scan
-     run: bandit -r . 
-      
    # - name: Run Bandit Scan
-   #   run: bandit -ll -ii -r . -f json -o bandit-report.json || true
+   #   run: bandit -r . 
+      
+   - name: Run Bandit Scan
+     run: bandit -ll -ii -r . -f json -o bandit-report.json 
 
-   # - name: Upload Artifact
-   #   uses: actions/upload-artifact@v4
-   #   if: always()
-   #   with:
-   #    name: bandit-findings
-   #    path: bandit-report.json
+   - name: Upload Artifact
+     uses: actions/upload-artifact@v4
+     if: always()
+     with:
+      name: bandit-findings
+      path: bandit-report.json
 
  # dast:
  #     runs-on: ubuntu-latest
