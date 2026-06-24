@@ -32,42 +32,28 @@ jobs:
       name: bandit-findings
       path: bandit-report.json
 
- # dast:
- #     runs-on: ubuntu-latest
- #     needs: sast_scan      # run AFTER your SAST job (use your job's actual name)
- #     if: always()   
- #     permissions:
- #       contents: read
- #       issues: write
- #     steps:
- #       - name: Checkout
- #         uses: actions/checkout@v4
+ dast_scan:
+     runs-on: ubuntu-latest
+     needs: sast_scan      # run AFTER your SAST job (use your job's actual name)
+     if: always()   
+     permissions:
+       contents: read
+       issues: write
+     steps:
+       - name: Checkout
+         uses: actions/checkout@v4
  
- #       - name: Build and start PyGoat
- #         run: |
- #          docker run -d --name pygoat -p 8000:8000 pygoat/pygoat:latest
- #          sleep 25      # give Django time to boot
-           
- #       - name: Wait until PyGoat is ready
- #         run: |
- #               for i in $(seq 1 30); do
- #                 if curl -sSf http://localhost:8000 >/dev/null 2>&1; then
- #                   echo "PyGoat is up!"
- #                   exit 0
- #                 fi
- #                 echo "Waiting for PyGoat... ($i)"
- #                 sleep 3
- #               done
- #               echo "PyGoat did not start in time — dumping logs:"
- #               docker logs pygoat
- #               exit 1
+       - name: Build and start PyGoat
+         run: |
+          docker run -d --name pygoat -p 8000:8000 pygoat/pygoat:latest
+          sleep 25      # give Django time to boot
                
- #       - name: OWASP ZAP Baseline Scan
- #         uses: zaproxy/action-baseline@v0.15.0
- #         with:
- #           token: ${{ secrets.GITHUB_TOKEN }}
- #           target: 'http://localhost:8000'
- #           cmd_options: '-a'
+       - name: OWASP ZAP Baseline Scan
+         uses: zaproxy/action-baseline@v0.15.0
+         with:
+           token: ${{ secrets.GITHUB_TOKEN }}
+           target: 'http://localhost:8000'
+           cmd_options: '-a'
  
  
     
